@@ -1,4 +1,5 @@
 // Marek Traczyński (261748)
+// Języki i Paradygmaty Programowania
 // Lista 1 Zadanie 4
 
 
