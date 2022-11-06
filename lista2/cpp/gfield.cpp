@@ -8,6 +8,10 @@
 #include "gfield.h"
 
 
+/////////////////////////////
+// Miscellaneous functions //
+/////////////////////////////
+
 long long int randomValue()
 {
     static int seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -39,6 +43,10 @@ long long int modInverse(const long long int value)
 }
 
 
+//////////////////
+// Constructors //
+//////////////////
+
 Galois::Galois() : mOrder(FIELD_ORDER), mValue(0) {}
 Galois::Galois(long long int value) : mOrder(FIELD_ORDER), mValue(value) 
 {
@@ -48,6 +56,10 @@ Galois::Galois(long long int value) : mOrder(FIELD_ORDER), mValue(value)
     }
 }
 
+
+/////////////
+// Getters //
+/////////////
 
 long long int Galois::getOrder() const
 {
@@ -59,6 +71,10 @@ long long int Galois::getValue() const
     return mValue;
 }
 
+
+//////////////////////////
+// Arithmetic operators //
+//////////////////////////
 
 Galois Galois::operator + (const Galois field) const
 {
@@ -93,6 +109,10 @@ Galois Galois::operator / (const Galois field) const
 }
 
 
+/////////////////////
+// Logic operators //
+/////////////////////
+
 bool Galois::operator == (const Galois field) const
 {
     return mValue == field.mValue;
@@ -124,6 +144,10 @@ bool Galois::operator < (const Galois field) const
 }
 
 
+//////////////////////////
+// Assignment operators //
+//////////////////////////
+
 Galois& Galois::operator = (const long long int value)
 {
     mValue = (FIELD_ORDER + (FIELD_ORDER + value) % FIELD_ORDER) % FIELD_ORDER;
@@ -136,6 +160,10 @@ Galois::operator int()
     return mValue;
 }
 
+
+/////////////////////
+// Stream operator //
+/////////////////////
 
 std::ostream& operator << (std::ostream& out, const Galois field)
 {
