@@ -31,12 +31,26 @@ public:
     Galois operator * (const Galois field) const;
     Galois operator / (const Galois field) const;
 
+    Galois operator + (const long long int value) const;
+    Galois operator - (const long long int value) const;
+    Galois operator * (const long long int value) const;
+    Galois operator / (const long long int value) const;
+
+
     bool operator == (const Galois field) const;
     bool operator != (const Galois field) const;
     bool operator >= (const Galois field) const;
     bool operator <= (const Galois field) const;
     bool operator > (const Galois field) const;
     bool operator < (const Galois field) const;
+
+    bool operator == (const long long int value) const;
+    bool operator != (const long long int value) const;
+    bool operator >= (const long long int value) const;
+    bool operator <= (const long long int value) const;
+    bool operator > (const long long int value) const;
+    bool operator < (const long long int value) const;
+
 
     Galois& operator = (const long long int value);
     operator int();
