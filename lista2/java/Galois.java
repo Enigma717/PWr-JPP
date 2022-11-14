@@ -5,9 +5,9 @@
 
 public class Galois {
     
-    /////////////
-    // Fields  //
-    /////////////
+    ////////////
+    // Fields //
+    ////////////
 
     public static final long FIELD_ORDER = 1234567891;
     private long order;

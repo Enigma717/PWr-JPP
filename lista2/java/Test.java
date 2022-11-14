@@ -5,7 +5,9 @@
 
 import java.util.Formatter;
 
+
 public class Test {
+    
     private static long randomValue() {
         return (long)(Math.random() * Galois.FIELD_ORDER + 1);
     }
