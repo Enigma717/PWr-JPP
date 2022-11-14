@@ -22,6 +22,7 @@ public class Test {
         Galois result = new Galois();
         Formatter f = new Formatter();
 
+        
         System.out.print("\n+---------------------------------------------------------+");
         System.out.print("\n|                    GALOIS FIELD TEST                    |");
         System.out.print("\n+---------------------------------------------------------+\n");

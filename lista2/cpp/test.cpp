@@ -19,6 +19,7 @@ int main()
     bool logicExpected = false;
     bool logicReal = false;
 
+
     cout.imbue(std::locale(""));
     cout << "\n+---------------------------------------------------------+";
     cout << "\n|                    GALOIS FIELD TEST                    |";

@@ -33,20 +33,10 @@ public class Galois {
         }
     }
 
+
     /////////////////////////////
     // Miscellaneous functions //
     /////////////////////////////
-
-    // long long int randomValue()
-    // {
-        // static int seed = std::chrono::system_clock::now().time_since_epoch().count();
-        // static std::mt19937 generator(seed);
-        // static std::uniform_int_distribution<long long int> distribution;
-// 
-        // distribution.param(std::uniform_int_distribution<long long int>::param_type(1, FIELD_ORDER));
-// 
-        // return distribution(generator);
-    // }
 
     private static long modInverse(final long value)
     {
@@ -66,7 +56,6 @@ public class Galois {
 
         return y;
     }
-
 
 
     /////////////
@@ -191,20 +180,20 @@ public class Galois {
         return field1.value != field2.value;
     }
 
-    public static Boolean gGreater(final Galois field1, final Galois field2) {
-        return field1.value > field2.value;
-    }
-
-    public static Boolean gLess(final Galois field1, final Galois field2) {
-        return field1.value < field2.value;
-    }
-
     public static Boolean gGreaterEq(final Galois field1, final Galois field2) {
         return field1.value >= field2.value;
     }
 
     public static Boolean gLessEq(final Galois field1, final Galois field2) {
         return field1.value <= field2.value;
+    }
+
+    public static Boolean gGreater(final Galois field1, final Galois field2) {
+        return field1.value > field2.value;
+    }
+
+    public static Boolean gLess(final Galois field1, final Galois field2) {
+        return field1.value < field2.value;
     }
 
     //////////////////////////////////
@@ -217,20 +206,20 @@ public class Galois {
         return field.value != value;
     }
 
-    public static Boolean gGreater(final Galois field, final long value) {
-        return field.value > value;
-    }
-
-    public static Boolean gLess(final Galois field, final long value) {
-        return field.value < value;
-    }
-
     public static Boolean gGreaterEq(final Galois field, final long value) {
         return field.value >= value;
     }
 
     public static Boolean gLessEq(final Galois field, final long value) {
         return field.value <= value;
+    }
+
+    public static Boolean gGreater(final Galois field, final long value) {
+        return field.value > value;
+    }
+
+    public static Boolean gLess(final Galois field, final long value) {
+        return field.value < value;
     }
 
 
