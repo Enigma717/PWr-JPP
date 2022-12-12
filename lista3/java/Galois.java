@@ -18,8 +18,7 @@ public class Galois {
     //////////////////
 
     Galois(long ord) {
-        if (checkPrime(ord) != true)
-        {
+        if (checkPrime(ord) != true) {
             throw new IllegalArgumentException(">> ERROR: Order must be prime! <<");
         }
         
@@ -28,8 +27,7 @@ public class Galois {
     }
 
     Galois(long ord, long val) {
-        if (checkPrime(ord) != true)
-        {
+        if (checkPrime(ord) != true) {
             throw new IllegalArgumentException(">> ERROR: Order must be prime! <<");
         }
 

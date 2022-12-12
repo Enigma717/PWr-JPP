@@ -7,7 +7,7 @@ import java.util.Formatter;
 
 public class Test {
     private static long randomValue() {
-        return (long)(Math.random() * Galois.FIELD_ORDER + 1);
+        return (long)(Math.random() * GaloisHC.FIELD_ORDER + 1);
     }
 
 
@@ -19,7 +19,7 @@ public class Test {
         Boolean logicExpected = false;
         Boolean logicReal = false;
 
-        Galois result = new Galois();
+        GaloisHC result = new GaloisHC();
         Formatter f = new Formatter();
 
         
@@ -43,19 +43,19 @@ public class Test {
         
         System.out.print("\n\n====================[ CONSTRUCTOR TEST ]====================\n");
 
-        Galois field1 = new Galois(random1);
+        GaloisHC field1 = new GaloisHC(random1);
         System.out.print("\n-> First random value (positive):");
         System.out.print("\n \\--> Field1: " + field1 + "\n"); 
-        assert(field1.getValue() == (random1 % Galois.FIELD_ORDER));
+        assert(field1.getValue() == (random1 % GaloisHC.FIELD_ORDER));
 
         
-        Galois field2 = new Galois(random2);
+        GaloisHC field2 = new GaloisHC(random2);
         System.out.print("\n-> Second random value (negative):");
         System.out.print("\n \\--> Field2: " + field2 + "\n"); 
         assert(field2.getValue() == 
-                    ((Galois.FIELD_ORDER +
-                    (random2 % Galois.FIELD_ORDER)) %
-                    Galois.FIELD_ORDER));
+                    ((GaloisHC.FIELD_ORDER +
+                    (random2 % GaloisHC.FIELD_ORDER)) %
+                    GaloisHC.FIELD_ORDER));
     
 
 
@@ -67,10 +67,10 @@ public class Test {
         System.out.print("\n \\--> Field1 @ Field2\n"); 
 
 
-        expected = (Galois.FIELD_ORDER + 
-                        ((random1 + random2) % Galois.FIELD_ORDER)) % 
-                        Galois.FIELD_ORDER;
-        result = Galois.gAddTwo(field1, field2);
+        expected = (GaloisHC.FIELD_ORDER + 
+                        ((random1 + random2) % GaloisHC.FIELD_ORDER)) % 
+                        GaloisHC.FIELD_ORDER;
+        result = GaloisHC.gAddTwo(field1, field2);
         real = result.getValue();
         System.out.print("\n-> Addition test:");
         System.out.print("\n|--> Expected result: " + expected); 
@@ -78,10 +78,10 @@ public class Test {
         assert(real == expected);
 
 
-        expected = (Galois.FIELD_ORDER + 
-                        ((random1 - random2) % Galois.FIELD_ORDER)) % 
-                        Galois.FIELD_ORDER;
-        result = Galois.gSubTwo(field1, field2);
+        expected = (GaloisHC.FIELD_ORDER + 
+                        ((random1 - random2) % GaloisHC.FIELD_ORDER)) % 
+                        GaloisHC.FIELD_ORDER;
+        result = GaloisHC.gSubTwo(field1, field2);
         real = result.getValue();
         System.out.print("\n-> Subtraction test:");
         System.out.print("\n|--> Expected result: " + expected); 
@@ -89,10 +89,10 @@ public class Test {
         assert(real == expected);
 
 
-        expected = (Galois.FIELD_ORDER + 
-                        ((random1 * random2) % Galois.FIELD_ORDER)) % 
-                        Galois.FIELD_ORDER;
-        result = Galois.gMulTwo(field1, field2);
+        expected = (GaloisHC.FIELD_ORDER + 
+                        ((random1 * random2) % GaloisHC.FIELD_ORDER)) % 
+                        GaloisHC.FIELD_ORDER;
+        result = GaloisHC.gMulTwo(field1, field2);
         real = result.getValue();
         System.out.print("\n-> Multiplication test:");
         System.out.print("\n|-> Expected result: " + expected); 
@@ -101,11 +101,11 @@ public class Test {
 
         
         try {
-            expected = (Galois.FIELD_ORDER + 
-                            ((random1 * random1) % Galois.FIELD_ORDER)) % 
-                            Galois.FIELD_ORDER;
-            result = Galois.gMulTwo(Galois.gDivTwo(field1, field2),
-                                    Galois.gMulTwo(field1, field2));
+            expected = (GaloisHC.FIELD_ORDER + 
+                            ((random1 * random1) % GaloisHC.FIELD_ORDER)) % 
+                            GaloisHC.FIELD_ORDER;
+            result = GaloisHC.gMulTwo(GaloisHC.gDivTwo(field1, field2),
+                                    GaloisHC.gMulTwo(field1, field2));
             real = result.getValue();
             System.out.print("\n-> Division test:");
             System.out.print("\n|--> Expected result: " + expected); 
@@ -120,18 +120,18 @@ public class Test {
         System.out.print("\n\n=======================[ LOGIC TEST ]=======================\n");
 
         logicExpected = 
-            ((Galois.FIELD_ORDER + (random1 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER) ==
-            ((Galois.FIELD_ORDER + (random2 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER); 
-        logicReal = Galois.gEqual(field1, field2);
+            ((GaloisHC.FIELD_ORDER + (random1 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER) ==
+            ((GaloisHC.FIELD_ORDER + (random2 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER); 
+        logicReal = GaloisHC.gEqual(field1, field2);
         System.out.print("\n-> Equality operator test (Field1 == Field2):");
         System.out.print("\n|--> Expected result: " + logicExpected); 
         System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
         assert(logicReal == logicExpected);
 
         logicExpected = 
-            ((Galois.FIELD_ORDER + (random1 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER) > 
-            ((Galois.FIELD_ORDER + (random2 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER); 
-        logicReal = Galois.gGreater(field1, field2);
+            ((GaloisHC.FIELD_ORDER + (random1 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER) > 
+            ((GaloisHC.FIELD_ORDER + (random2 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER); 
+        logicReal = GaloisHC.gGreater(field1, field2);
         System.out.print("\n-> Relational operator test (Field1 > Field2):");
         System.out.print("\n|--> Expected result: " + logicExpected); 
         System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
@@ -139,9 +139,9 @@ public class Test {
     
     
         logicExpected = 
-            ((Galois.FIELD_ORDER + (random1 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER) < 
-            ((Galois.FIELD_ORDER + (random2 % Galois.FIELD_ORDER)) % Galois.FIELD_ORDER); 
-        logicReal = Galois.gLess(field1, field2);
+            ((GaloisHC.FIELD_ORDER + (random1 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER) < 
+            ((GaloisHC.FIELD_ORDER + (random2 % GaloisHC.FIELD_ORDER)) % GaloisHC.FIELD_ORDER); 
+        logicReal = GaloisHC.gLess(field1, field2);
         System.out.print("\n-> Relational operator test (Field1 < Field2):");
         System.out.print("\n|--> Expected result: " + logicExpected); 
         System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
@@ -151,9 +151,9 @@ public class Test {
 
         System.out.print("\n\n=====================[ ASSIGNMENT TEST ]====================\n");
 
-        Galois newField = new Galois();
-        long testInteger = Galois.assignToInt(newField);
-        System.out.print("\n-> Integer to Object conversion test (int = Galois):");
+        GaloisHC newField = new GaloisHC();
+        long testInteger = GaloisHC.assignToInt(newField);
+        System.out.print("\n-> Integer to Object conversion test (int = GaloisHC):");
         System.out.print("\n|-> newField object: " + newField); 
         System.out.print("\n\\--> testInteger value: " + testInteger + "\n"); 
         assert(newField.getValue() == testInteger);
@@ -161,12 +161,12 @@ public class Test {
     
         testInteger = 256;
         newField.assignToObject(testInteger);
-        System.out.print("\n-> Object to Integer conversion test (Galois = int):");
+        System.out.print("\n-> Object to Integer conversion test (GaloisHC = int):");
         System.out.print("\n|-> New testInteger value: " + testInteger); 
         System.out.print("\n\\--> Updated newField object : " + newField + "\n\n"); 
-        assert(((Galois.FIELD_ORDER + 
-                    (testInteger % Galois.FIELD_ORDER)) % 
-                    Galois.FIELD_ORDER) == newField.getValue());
+        assert(((GaloisHC.FIELD_ORDER + 
+                    (testInteger % GaloisHC.FIELD_ORDER)) % 
+                    GaloisHC.FIELD_ORDER) == newField.getValue());
     
     
         
