@@ -1,6 +1,6 @@
 //  Marek Traczyński (261748)
 // Języki i Paradygmaty Programowania
-// Lista 2 Zadanie 2
+// Lista 3 Zadanie 1
 
 
 public class Galois {
@@ -9,8 +9,7 @@ public class Galois {
     // Fields  //
     /////////////
 
-    public static final long FIELD_ORDER = 1234567891;
-    private long order;
+    private final long order;
     private long value;
 
     
@@ -18,18 +17,27 @@ public class Galois {
     // Constructors //
     //////////////////
 
-    Galois() {
-        order = FIELD_ORDER;
+    Galois(long ord) {
+        if (checkPrime(ord) != true)
+        {
+            throw new IllegalArgumentException(">> ERROR: Order must be prime! <<");
+        }
+        
+        order = ord;
         value = 0;
     }
 
-    Galois(long val) {
-        order = FIELD_ORDER;
+    Galois(long ord, long val) {
+        if (checkPrime(ord) != true)
+        {
+            throw new IllegalArgumentException(">> ERROR: Order must be prime! <<");
+        }
 
+        order = ord;
         if (val < 0) {
-            value = FIELD_ORDER + (val % FIELD_ORDER);
+            value = ord + (val % ord);
         } else {
-            value = val % FIELD_ORDER;
+            value = val % ord;
         }
     }
 
@@ -38,21 +46,43 @@ public class Galois {
     // Miscellaneous functions //
     /////////////////////////////
 
-    private static long modInverse(final long value) {
+    private static long modInverse(final long value, final long order) {
         long x = value;
         long y = 1;
-        long n = FIELD_ORDER - 2;
+        long n = order - 2;
 
         while (n > 0) {
             if (n % 2 == 1) {
-                y = (y * x) % FIELD_ORDER;
+                y = (y * x) % order;
             }
             
             n = n / 2;
-            x = (x * x) % FIELD_ORDER;
+            x = (x * x) % order;
         }
 
         return y;
+    }
+
+    private static Boolean checkPrime(final long number) {
+        if (number <= 1) {
+            return false;
+        }
+
+        if (number <= 3) {
+            return true;
+        }
+
+        if (number % 2 == 0 || number % 3 == 0) {
+            return false;
+        }
+
+        for (int i = 5; i * i <= number; i += 6) {
+            if (number % i == 0 || number % (i + 2) == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -74,19 +104,19 @@ public class Galois {
     //////////////////////////////////
 
     public Galois gAdd(final Galois field) {
-        this.value = (this.value + field.value) % FIELD_ORDER;
+        this.value = (this.value + field.value) % this.order;
         
         return this;
     }
 
     public Galois gSub(final Galois field) {
-        this.value = (FIELD_ORDER + (this.value - field.value) % FIELD_ORDER) % FIELD_ORDER;
+        this.value = (this.order + (this.value - field.value) % this.order) % this.order;
         
         return this;
     }
 
     public Galois gMul(final Galois field) {
-        this.value = (this.value * field.value) % FIELD_ORDER;
+        this.value = (this.value * field.value) % this.order;
         
         return this;
     }
@@ -96,7 +126,7 @@ public class Galois {
             throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
         }
 
-        this.value = (this.value * modInverse(field.value)) % FIELD_ORDER;
+        this.value = (this.value * modInverse(field.value, this.order)) % this.order;
         
         return this;
     }
@@ -104,19 +134,19 @@ public class Galois {
     //////////////////////////////////
 
     public Galois gAdd(final long value) {
-        this.value = (this.value + value) % FIELD_ORDER;
+        this.value = (this.value + value) % this.order;
         
         return this;
     }
 
     public Galois gSub(final long value) {
-        this.value = (FIELD_ORDER + (this.value - value) % FIELD_ORDER) % FIELD_ORDER;
+        this.value = (this.order + (this.value - value) % this.order) % this.order;
         
         return this;
     }
 
     public Galois gMul(final long value) {
-        this.value = (this.value * value) % FIELD_ORDER;
+        this.value = (this.value * value) % this.order;
         
         return this;
     }
@@ -126,7 +156,7 @@ public class Galois {
             throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
         }
 
-        this.value = (this.value * modInverse(value)) % FIELD_ORDER;
+        this.value = (this.value * modInverse(value, this.order)) % this.order;
         
         return this;
     }
@@ -134,22 +164,22 @@ public class Galois {
     //////////////////////////////////
 
     public static Galois gAddTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois();
-        result.value = (field1.value + field2.value) % FIELD_ORDER;
+        Galois result = new Galois(field1.order);
+        result.value = (field1.value + field2.value) % field1.order;
         
         return result;
     }
 
     public static Galois gSubTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois();
-        result.value = (FIELD_ORDER + (field1.value - field2.value) % FIELD_ORDER) % FIELD_ORDER;
+        Galois result = new Galois(field1.order);
+        result.value = (field1.order + (field1.value - field2.value) % field1.order) % field1.order;
         
         return result;
     }
 
     public static Galois gMulTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois();
-        result.value = (field1.value * field2.value) % FIELD_ORDER;
+        Galois result = new Galois(field1.order);
+        result.value = (field1.value * field2.value) % field1.order;
         
         return result;
     }
@@ -159,8 +189,8 @@ public class Galois {
             throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
         }
 
-        Galois result = new Galois();
-        result.value = (field1.value * modInverse(field2.value)) % FIELD_ORDER;
+        Galois result = new Galois(field1.order);
+        result.value = (field1.value * modInverse(field2.value, field1.order)) % field1.order;
         
         return result;
     }
@@ -227,14 +257,14 @@ public class Galois {
 
     public Galois assignToObject(final long value)
     {
-        this.value = (FIELD_ORDER + (value % FIELD_ORDER)) % FIELD_ORDER;
+        this.value = (this.order + (value % this.order)) % this.order;
 
         return this;
     }
 
     public static Galois assignToObject(Galois field, final long value)
     {
-        field.value = (FIELD_ORDER + (value % FIELD_ORDER)) % FIELD_ORDER;
+        field.value = (field.order + (value % field.order)) % field.order;
 
         return field;
     }

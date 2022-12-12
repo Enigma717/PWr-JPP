@@ -55,6 +55,7 @@ public:
     Galois& operator = (const long long int value);
     operator int();
 
+
     friend std::ostream& operator << (std::ostream& out, const Galois field);
 };
 
