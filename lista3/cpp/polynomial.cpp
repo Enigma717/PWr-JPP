@@ -13,19 +13,8 @@
 // Miscellaneous functions //
 /////////////////////////////
 
-long long int randomValue(const long long int order)
-{
-    static int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    static std::mt19937 generator(seed);
-    static std::uniform_int_distribution<long long int> distribution;
-
-    distribution.param(std::uniform_int_distribution<long long int>::param_type(1, order));
-
-    return distribution(generator);
-}
-
 template <typename T>
-void clearCoeffsZeros()
+void Polynomial<T>::clearCoeffsZeros()
 {
     for (int i = mCoefficients.size() - 1; i > mDegree - 1; i--)
     {
@@ -38,7 +27,7 @@ void clearCoeffsZeros()
 }
 
 template <typename T>
-bool isZeroPoly()
+bool Polynomial<T>::isZeroPoly() const
 {
     if (mCoefficients.size() == 1 && mCoefficients[0] == T(0))
     {
@@ -49,7 +38,7 @@ bool isZeroPoly()
 }
 
 template <typename T>
-std::tuple<Polynomial<T>, Polynomial<T>> divide(Polynomial<T> divisor) const
+std::tuple<Polynomial<T>, Polynomial<T>> Polynomial<T>::divide(Polynomial<T> divisor) const
 {
     if (divisor.isZeroPoly() == true)
     {
@@ -104,7 +93,7 @@ Polynomial<T>::Polynomial(vector<T> coeffs) : mCoefficients(coeffs),
         mDegree = 0;
     }
 
-    clearCoeffsZeros()
+    clearCoeffsZeros();
 }
 
 
@@ -146,11 +135,11 @@ Polynomial<T> Polynomial<T>::operator + (const Polynomial<T> poly) const
 
         if (i < p1_size)
         {
-            sum += mCoefficients[i];
+            sum = sum + mCoefficients[i];
         }
         if (i < p2_size)
         {
-            sum += poly.mCoefficients[i];
+            sum = sum + poly.mCoefficients[i];
         }
 
         result_coeffs.push_back(sum);
@@ -166,7 +155,7 @@ template <typename T>
 Polynomial<T> Polynomial<T>::operator - (const Polynomial<T> poly) const
 {
     vector<T> temp_coeffs = poly.mCoefficients;
-    std::for_each(std::begin(temp_coeffs), std::end(temp_coeffs), [](T& c){ c *= T(-1);});
+    std::for_each(std::begin(temp_coeffs), std::end(temp_coeffs), [](T& c){ c = c * T(-1);});
         
     Polynomial<T> temp_poly(temp_coeffs);
     Polynomial<T> result = *this + temp_poly;
@@ -177,7 +166,7 @@ Polynomial<T> Polynomial<T>::operator - (const Polynomial<T> poly) const
 template <typename T>
 Polynomial<T> Polynomial<T>::operator * (const Polynomial<T> poly) const
 {
-    if (*this->isZeroPoly() == true || poly.isZeroPoly() == true)
+    if (this->isZeroPoly() == true || poly.isZeroPoly() == true)
     {
         Polynomial<T> zero_poly;
         return zero_poly;
@@ -193,7 +182,7 @@ Polynomial<T> Polynomial<T>::operator * (const Polynomial<T> poly) const
     {
         for (int j = 0; j < p2_size; j++)
         {
-            result_coeffs[i+j] += mCoefficients[i] * poly.mCoefficients[j];
+            result_coeffs[i+j] = result_coeffs[i+j] + (mCoefficients[i] * poly.mCoefficients[j]);
         }
     }
 
@@ -212,12 +201,11 @@ Polynomial<T> Polynomial<T>::operator / (const Polynomial<T> poly) const
     }
     if (this->isZeroPoly() == true)
     {
-        Test<T> zero_poly;
+        Polynomial<T> zero_poly;
         return zero_poly;
     }
     
-    
-    Test<T> result = std::get<0>(this->divide(poly));
+    Polynomial<T> result = std::get<0>(this->divide(poly));
 
     return result;
 }
@@ -225,18 +213,27 @@ Polynomial<T> Polynomial<T>::operator / (const Polynomial<T> poly) const
 template <typename T>
 Polynomial<T> Polynomial<T>::operator % (const Polynomial<T> poly) const
 {
+    Polynomial<T> result;
+
     if (poly.isZeroPoly() == true)
     {
         throw "\n\n>> ERROR: Can't divide by 0 polynomial! <<";
     }
     if (this->isZeroPoly() == true)
     {
-        Test<T> zero_poly;
+        Polynomial<T> zero_poly;
         return zero_poly;
     }
     
+    try
+    {
+        result = std::get<1>(this->divide(poly));
+    }
+    catch (const char* msg)
+    {
+        std::cerr << msg << "\n";
+    }
     
-    Test<T> result = std::get<1>(this->divide(poly));
 
     return result;
 }
@@ -335,7 +332,8 @@ Polynomial<T>& Polynomial<T>::operator /= (const Polynomial<T> poly)
 template <typename T>
 Polynomial<T>& Polynomial<T>::operator = (const Polynomial<T> poly)
 {
-    this->mCoefficients = poly.mCoefficients;
+    mCoefficients = poly.mCoefficients;
+    mDegree = poly.mDegree;
 
     return *this;
 }
@@ -377,7 +375,8 @@ Polynomial<T>& Polynomial<T>::operator /= (const T value)
 template <typename T>
 Polynomial<T>& Polynomial<T>::operator = (const T value)
 {
-    this->mCoefficients[0] = value;
+    Polynomial<T> temp(value);
+    *this = temp;
 
     return *this;
 }
@@ -399,37 +398,129 @@ Polynomial<T>& Polynomial<T>::operator = (const vector<T> coeffs)
 template <typename T>
 bool Polynomial<T>::operator == (const Polynomial<T> poly) const
 {
-    return mValue == poly.mValue;
+    return mCoefficients == poly.mCoefficients;
 }
 
 template <typename T>
 bool Polynomial<T>::operator != (const Polynomial<T> poly) const
 {
-    return mValue != poly.mValue;
+    return mCoefficients != poly.mCoefficients;
 }
 
 template <typename T>
 bool Polynomial<T>::operator >= (const Polynomial<T> poly) const
 {
-    return mValue >= poly.mValue;
+    if (mDegree > poly.mDegree)
+    {
+        return true;
+    }
+
+    if (mDegree < poly.mDegree)
+    {
+        return false;
+    }
+
+    
+    for (int i = mDegree; i >= 0; i--)
+    {
+        if (mCoefficients[i] > poly.mCoefficients[i])
+        {
+            return true;
+        }
+        else if (mCoefficients[i] < poly.mCoefficients[i])
+        {
+            return false;
+        }
+    }
+        
+    return true; 
 }
 
 template <typename T>
 bool Polynomial<T>::operator <= (const Polynomial<T> poly) const
 {
-    return mValue <= poly.mValue;
+    if (mDegree < poly.mDegree)
+    {
+        return true;
+    }
+
+    if (mDegree > poly.mDegree)
+    {
+        return false;
+    }
+
+    
+    for (int i = mDegree; i >= 0; i--)
+    {
+        if (mCoefficients[i] < poly.mCoefficients[i])
+        {
+            return true;
+        }
+        else if (mCoefficients[i] > poly.mCoefficients[i])
+        {
+            return false;
+        }
+    }
+        
+    return true;
 }
 
 template <typename T>
 bool Polynomial<T>::operator > (const Polynomial<T> poly) const
 {
-    return mValue > poly.mValue;
+    if (mDegree > poly.mDegree)
+    {
+        return true;
+    }
+
+    if (mDegree < poly.mDegree)
+    {
+        return false;
+    }
+
+    
+    for (int i = mDegree; i >= 0; i--)
+    {
+        if (mCoefficients[i] > poly.mCoefficients[i])
+        {
+            return true;
+        }
+        else if (mCoefficients[i] < poly.mCoefficients[i])
+        {
+            return false;
+        }
+    }
+        
+    return false;    
 }
 
 template <typename T>
 bool Polynomial<T>::operator < (const Polynomial<T> poly) const
 {
-    return mValue < poly.mValue;
+    if (mDegree < poly.mDegree)
+    {
+        return true;
+    }
+
+    if (mDegree > poly.mDegree)
+    {
+        return false;
+    }
+
+    
+    for (int i = mDegree; i >= 0; i--)
+    {
+        if (mCoefficients[i] < poly.mCoefficients[i])
+        {
+            return true;
+        }
+        else if (mCoefficients[i] > poly.mCoefficients[i])
+        {
+            return false;
+        }
+    }
+        
+    return false;
 }
 
 //////////////////////////////////
@@ -437,46 +528,93 @@ bool Polynomial<T>::operator < (const Polynomial<T> poly) const
 template <typename T>
 bool Polynomial<T>::operator == (const T value) const
 {
-    return mValue == value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] == value;
+    }
+
+    return false;
 }
 
 template <typename T>
 bool Polynomial<T>::operator != (const T value) const
 {
-    return mValue != value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] != value;
+    }
+
+    return false;
 }
 
 template <typename T>
 bool Polynomial<T>::operator >= (const T value) const
 {
-    return mValue >= value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] >= value;
+    }
+
+    return false;
 }
 
 template <typename T>
 bool Polynomial<T>::operator <= (const T value) const
 {
-    return mValue <= value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] <= value;
+    }
+
+    return false;
 }
 
 template <typename T>
 bool Polynomial<T>::operator > (const T value) const
 {
-    return mValue > value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] > value;
+    }
+
+    return false;
 }
 
 template <typename T>
 bool Polynomial<T>::operator < (const T value) const
 {
-    return mValue < value;
+    if (mCoefficients.size() == 1)
+    {
+        return mCoefficients[0] < value;
+    }
+
+    return false;
 }
 
 
-/////////////////////
-// Stream operator //
-/////////////////////
+//////////////////////////
+// Evaluation operators //
+//////////////////////////
 
 template <typename T>
-std::ostream& operator << (std::ostream& out, const Polynomial<T> poly)
+T Polynomial<T>::operator () (const T value) const
 {
-    return out << "GF(" << mOrder << ")[" << poly.mValue << "]";
+    T result = mCoefficients.back();
+    for (int i = mDegree - 1; i >= 0; i--)
+    {
+        result = result * value + mCoefficients[i];
+    }
+
+    return result;
+}
+
+template <typename T>
+T Polynomial<T>::operator [] (const int index) const
+{
+    if (index > mDegree || index < 0)
+    {
+        throw "\n\n>> ERROR: Index out of coefficients bounds! <<";
+    }
+
+    return mCoefficients[index];
 }

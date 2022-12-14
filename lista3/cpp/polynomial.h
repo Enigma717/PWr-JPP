@@ -14,11 +14,6 @@
 using std::vector;
 
 
-inline constexpr long long int TEST_ORDER = 1234567891;
-
-long long int randomValue(const long long int order);
-
-
 template <typename T>
 class Polynomial {
 private:
@@ -26,13 +21,13 @@ private:
     int mDegree;
 
     void clearCoeffsZeros();
-    bool isZeroPoly();
-    std::tuple<Polynomial<T>, Polynomial<T>> divide(const Polynomial<T> divisor) const;
+    bool isZeroPoly() const;
 public:
     Polynomial();
     Polynomial(T value);
     Polynomial(vector<T> coeffs);
         
+    std::tuple<Polynomial<T>, Polynomial<T>> divide(const Polynomial<T> divisor) const;
 
     vector<T> getCoefficients() const;
     int getDegree() const;
@@ -69,19 +64,71 @@ public:
     bool operator != (const Polynomial<T> poly) const;
     bool operator >= (const Polynomial<T> poly) const;
     bool operator <= (const Polynomial<T> poly) const;
-    bool operator > (const Polynomial<T> poly) const;
-    bool operator < (const Polynomial<T> poly) const;
+    bool operator >  (const Polynomial<T> poly) const;
+    bool operator <  (const Polynomial<T> poly) const;
 
     bool operator == (const T value) const;
     bool operator != (const T value) const;
     bool operator >= (const T value) const;
     bool operator <= (const T value) const;
-    bool operator > (const T value) const;
-    bool operator < (const T value) const;
+    bool operator >  (const T value) const;
+    bool operator <  (const T value) const;
 
 
-    template <T>
-    friend std::ostream& operator << (std::ostream& out, const Polynomial<T> field);
+    T operator () (const T value) const;
+    T operator [] (const int index) const;
+
+
+    friend std::ostream& operator << (std::ostream& out, const Polynomial<T> poly)
+    {
+        if (poly.getCoefficients().size() == 1 && poly[0] == T(0))
+        {
+            return out << "0";
+        }
+
+        const char *plus = "";
+        const char *space = "";
+
+        for(int i = poly.getDegree(); i >= 0; i--)
+        {
+            if (poly[i] == T(0))
+            {
+                continue;
+            }
+
+            if (poly[i] > T(0))
+            {
+                out << space << plus << space; 
+            }
+            else if (poly[i] < T(0))
+            {
+                out << space << "-" << space; 
+            }
+
+            plus = "+";
+            space = " ";
+
+            if (i == 0 || fabs(poly[i] != T(1)))
+            {
+                out << fabs(poly[i]);
+            }
+
+            if (i == 0)
+            {
+                continue;
+            }
+
+            out << "x";
+
+            if (i == 1)
+            {
+                continue;
+            }
+
+            out << "^" << i;
+        }
+        return out;
+    }
 };
 
 

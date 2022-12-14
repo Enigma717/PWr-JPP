@@ -12,13 +12,24 @@
 // Miscellaneous functions //
 /////////////////////////////
 
-long long int randomValue(const long long int order)
+double randomDouble(const long long int order)
+{
+    static int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    static std::mt19937 generator(seed);
+    static std::uniform_real_distribution<double> distribution;
+
+    distribution.param(std::uniform_real_distribution<double>::param_type(0, order));
+
+    return distribution(generator);
+}
+
+long long int randomLLInt(const long long int order)
 {
     static int seed = std::chrono::system_clock::now().time_since_epoch().count();
     static std::mt19937 generator(seed);
     static std::uniform_int_distribution<long long int> distribution;
 
-    distribution.param(std::uniform_int_distribution<long long int>::param_type(1, order));
+    distribution.param(std::uniform_int_distribution<long long int>::param_type(0, order));
 
     return distribution(generator);
 }

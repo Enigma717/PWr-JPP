@@ -11,7 +11,8 @@
 
 inline constexpr long long int TEST_ORDER = 1234567891;
 
-long long int randomValue(const long long int order);
+double randomDouble(const long long int order);
+long long int randomLLInt(const long long int order);
 long long int modInverse(const long long int value, const long long int order);
 bool checkPrime(const long long int value);
 

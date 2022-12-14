@@ -12,8 +12,8 @@ using std::cout;
 
 int main()
 {
-    long long int random1 = randomValue(TEST_ORDER);
-    long long int random2 = -(randomValue(TEST_ORDER));
+    long long int random1 = randomLLInt(TEST_ORDER);
+    long long int random2 = -(randomLLInt(TEST_ORDER));
     long long int expected = 0;
     long long int real = 0;
     bool logicExpected = false;
