@@ -3,13 +3,13 @@
 // Lista 3 Zadanie 1
 
 
-#ifndef GALOISFIELD_TEMPLATES_H
-#define GALOISFIELD_TEMPLATES_H
+#ifndef GALOISFIELD_H
+#define GALOISFIELD_H
 
 #include <iostream>
 
 
-inline constexpr long long int FIELD_ORDER = 1234567891;
+inline constexpr long long int TEST_ORDER = 1234567891;
 
 long long int randomValue(const long long int order);
 long long int modInverse(const long long int value, const long long int order);
@@ -57,6 +57,7 @@ public:
 
     Galois<mOrder>& operator = (const long long int value);
     operator int();
+
 
     template <long long int order>
     friend std::ostream& operator << (std::ostream& out, const Galois<order> field);
