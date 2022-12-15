@@ -108,7 +108,7 @@ public:
             plus = "+";
             space = " ";
 
-            if (i == 0 || fabs(poly[i] != T(1)))
+            if (i == 0 || fabs(poly[i]) != T(1))
             {
                 out << fabs(poly[i]);
             }

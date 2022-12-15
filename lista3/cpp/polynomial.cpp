@@ -600,6 +600,7 @@ template <typename T>
 T Polynomial<T>::operator () (const T value) const
 {
     T result = mCoefficients.back();
+    
     for (int i = mDegree - 1; i >= 0; i--)
     {
         result = result * value + mCoefficients[i];

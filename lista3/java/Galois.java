@@ -1,9 +1,9 @@
 //  Marek Traczyński (261748)
 // Języki i Paradygmaty Programowania
-// Lista 3 Zadanie 1
+// Lista 3 Zadanie 1, 3
 
 
-public class Galois {
+public class Galois implements CoeffType<Galois> {
     
     /////////////
     // Fields  //
@@ -101,96 +101,76 @@ public class Galois {
     // Arithmetic operators methods //
     //////////////////////////////////
 
-    public Galois gAdd(final Galois field) {
+    @Override
+    public Galois tAdd(final Galois field) {
         this.value = (this.value + field.value) % this.order;
         
         return this;
     }
 
-    public Galois gSub(final Galois field) {
+    @Override
+    public Galois tSub(final Galois field) {
         this.value = (this.order + (this.value - field.value) % this.order) % this.order;
         
         return this;
     }
 
-    public Galois gMul(final Galois field) {
+    @Override
+    public Galois tMul(final Galois field) {
         this.value = (this.value * field.value) % this.order;
         
         return this;
     }
 
-    public Galois gDiv(final Galois field) throws IllegalArgumentException {
+    @Override
+    public Galois tDiv(final Galois field) throws IllegalArgumentException {
         if (field.value == 0) {
             throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
         }
 
-        this.value = (this.value * modInverse(field.value, this.order)) % this.order;
+        this.tMul(field.tInverse());
         
         return this;
     }
 
-    //////////////////////////////////
-
-    public Galois gAdd(final long value) {
-        this.value = (this.value + value) % this.order;
-        
-        return this;
+    @Override
+    public Galois tInverse() {
+        return new Galois(order, modInverse(this.value, order));
     }
 
-    public Galois gSub(final long value) {
-        this.value = (this.order + (this.value - value) % this.order) % this.order;
-        
-        return this;
+
+    //////////////////////////////
+    // CoeffType implementation //
+    //////////////////////////////
+
+    @Override
+    public Galois tAbsolute() {
+        return new Galois(this.order, Math.abs(this.value));
     }
 
-    public Galois gMul(final long value) {
-        this.value = (this.value * value) % this.order;
-        
-        return this;
+    @Override
+    public Galois tNegate() {
+        return new Galois(this.order, -(this.value));
     }
 
-    public Galois gDiv(final long value) throws IllegalArgumentException {
-        if (value == 0) {
-            throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
-        }
-
-        this.value = (this.value * modInverse(value, this.order)) % this.order;
-        
-        return this;
+    @Override
+    public Galois tZero() {
+        return new Galois(this.order, 0);
     }
 
-    //////////////////////////////////
-
-    public static Galois gAddTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois(field1.order);
-        result.value = (field1.value + field2.value) % field1.order;
-        
-        return result;
+    @Override
+    public Galois tOne() {
+        return new Galois(this.order, 1);
     }
 
-    public static Galois gSubTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois(field1.order);
-        result.value = (field1.order + (field1.value - field2.value) % field1.order) % field1.order;
-        
-        return result;
+    @Override
+    public Boolean tIsZero() {
+        return this.value == 0;
     }
 
-    public static Galois gMulTwo(final Galois field1, final Galois field2) {
-        Galois result = new Galois(field1.order);
-        result.value = (field1.value * field2.value) % field1.order;
-        
-        return result;
-    }
-
-    public static Galois gDivTwo(final Galois field1, final Galois field2) {
-        if (field2.value == 0) {
-            throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
-        }
-
-        Galois result = new Galois(field1.order);
-        result.value = (field1.value * modInverse(field2.value, field1.order)) % field1.order;
-        
-        return result;
+    @Override
+    public Boolean tIsOne() {
+        return this.value == 1;
     }
 
 
@@ -198,54 +178,29 @@ public class Galois {
     // Logical operators methods //
     ///////////////////////////////
 
-    public static Boolean gEqual(final Galois field1, final Galois field2) {
-        return field1.value == field2.value;
+    @Override
+    public Boolean tEqual(final Galois field) {
+        return this.value == field.value;    
     }
-
-    public static Boolean gNotEqual(final Galois field1, final Galois field2) {
-        return field1.value != field2.value;
+    @Override
+    public Boolean tNotEqual(final Galois field) {
+        return this.value != field.value;    
     }
-
-    public static Boolean gGreaterEq(final Galois field1, final Galois field2) {
-        return field1.value >= field2.value;
+    @Override
+    public Boolean tGreaterEq(final Galois field) {
+        return this.value >= field.value;    
     }
-
-    public static Boolean gLessEq(final Galois field1, final Galois field2) {
-        return field1.value <= field2.value;
+    @Override
+    public Boolean tLessEq(final Galois field) {
+        return this.value <= field.value;    
     }
-
-    public static Boolean gGreater(final Galois field1, final Galois field2) {
-        return field1.value > field2.value;
+    @Override
+    public Boolean tGreater(final Galois field) {
+        return this.value > field.value;    
     }
-
-    public static Boolean gLess(final Galois field1, final Galois field2) {
-        return field1.value < field2.value;
-    }
-
-    //////////////////////////////////
-
-    public static Boolean gEqual(final Galois field, final long value) {
-        return field.value == value;
-    }
-
-    public static Boolean gNotEqual(final Galois field, final long value) {
-        return field.value != value;
-    }
-
-    public static Boolean gGreaterEq(final Galois field, final long value) {
-        return field.value >= value;
-    }
-
-    public static Boolean gLessEq(final Galois field, final long value) {
-        return field.value <= value;
-    }
-
-    public static Boolean gGreater(final Galois field, final long value) {
-        return field.value > value;
-    }
-
-    public static Boolean gLess(final Galois field, final long value) {
-        return field.value < value;
+    @Override
+    public Boolean tLess(final Galois field) {
+        return this.value < field.value;    
     }
 
 
@@ -253,22 +208,19 @@ public class Galois {
     // Assignment operators methods //
     //////////////////////////////////
 
-    public Galois assignToObject(final long value)
-    {
+    public Galois assignToObject(final long value) {
         this.value = (this.order + (value % this.order)) % this.order;
 
         return this;
     }
 
-    public static Galois assignToObject(Galois field, final long value)
-    {
+    public static Galois assignToObject(Galois field, final long value) {
         field.value = (field.order + (value % field.order)) % field.order;
 
         return field;
     }
 
-    public static long assignToInt(final Galois field)
-    {
+    public static long assignToInt(final Galois field) {
         return field.value;
     }
 
@@ -278,6 +230,9 @@ public class Galois {
     /////////////////////
 
     public String toString() {
-        return ("GF(" + this.order + ")[" + this.value + "]");
+        String result = "";
+        result += this.value;
+        
+        return result;
     }
 }

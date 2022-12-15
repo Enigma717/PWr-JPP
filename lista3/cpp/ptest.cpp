@@ -15,9 +15,9 @@ using std::cout;
 int main()
 {
     double dRandom1 = randomDouble(100);
-    double dRandom2 = randomDouble(100);
+    double dRandom2 = -(randomDouble(100));
     double dRandom3 = randomDouble(100);
-    double dRandom4 = randomDouble(100);
+    double dRandom4 = -(randomDouble(100));
     double dRandom5 = randomDouble(100);
 
     long long int lliRandom1 = floor(dRandom1);
@@ -110,7 +110,11 @@ int main()
     Polynomial<double> d_test_poly(d_test_values);
     Polynomial<Galois<2>> gf_test_poly(gf_test_values);
 
-    
+    cout << "\n>> Test real numbers polynomial: " << d_test_poly;
+    cout << "\n>> Test finite field polynomial: " << gf_test_poly << "\n";
+
+    //////////////////////////////////
+    cout << "\n-----------------------\n";
     //////////////////////////////////
 
     cout << "\n-> Addition test:";
@@ -288,18 +292,19 @@ int main()
     cout << "\n>> First real numbers polynomial: " << d_poly;
     cout << "\n>> Second real numbers polynomial: " << d_test_poly;
     cout << "\n>> First finite field polynomial: " << gf_poly;
-    cout << "\n>> Second finite field polynomial: " << gf_test_poly;
+    cout << "\n>> Second finite field polynomial: " << gf_test_poly << "\n";
 
-    
+    cout << "\n-----------------------\n";
 
-    cout << "\n\n-> Equality operator test (Polynomial1 == Polynomial1):";
+    cout << "\n-> Equality operator test (Polynomial1 == Polynomial1):";
     cout << "\n|--> Real numbers result: " << std::boolalpha << (d_poly == d_poly);
     cout << "\n|--> Finite fields result: " << (gf_poly == gf_poly); 
     assert(d_poly == d_poly);
     assert(gf_poly == gf_poly);
 
+    cout << "\n\n-----------------------\n";
 
-    cout << "\n\n-> Inequality operator test (Polynomial1 != Polynomial2):";
+    cout << "\n-> Inequality operator test (Polynomial1 != Polynomial2):";
     cout << "\n|--> Real numbers result: " << std::boolalpha << (d_poly != d_test_poly);
     cout << "\n|--> Finite fields result: " << (gf_poly != gf_test_poly); 
     assert(d_poly != d_test_poly);
