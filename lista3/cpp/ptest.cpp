@@ -15,9 +15,9 @@ using std::cout;
 int main()
 {
     double dRandom1 = randomDouble(100);
-    double dRandom2 = -(randomDouble(100));
+    double dRandom2 = randomDouble(100);
     double dRandom3 = randomDouble(100);
-    double dRandom4 = -(randomDouble(100));
+    double dRandom4 = randomDouble(100);
     double dRandom5 = randomDouble(100);
 
     long long int lliRandom1 = floor(dRandom1);
@@ -26,11 +26,11 @@ int main()
     long long int lliRandom4 = floor(dRandom4);
     long long int lliRandom5 = floor(dRandom5);
 
-    Galois<2> Field1(lliRandom1);
-    Galois<2> Field2(lliRandom2);
-    Galois<2> Field3(lliRandom3);
-    Galois<2> Field4(lliRandom4);
-    Galois<2> Field5(lliRandom5);
+    Galois<2> Field1(1);
+    Galois<2> Field2(0);
+    Galois<2> Field3(0);
+    Galois<2> Field4(0);
+    Galois<2> Field5(1);
 
     Galois<2> Test_field1(1);
     Galois<2> Test_field2(2);
@@ -316,8 +316,11 @@ int main()
     cout << "\n\n=======================[ EVALUATION TEST ]=======================\n";
 
     cout << "\n>> Real numbers polynomial: " << d_poly;
-    cout << "\n>> Finite field polynomial: " << gf_poly;
-    cout << "\n\n-> Evaluating at point x = 5:";
+    cout << "\n>> Finite field polynomial: " << gf_poly < "\n";
+    
+    cout << "\n-----------------------\n";
+
+    cout << "\n-> Evaluating at point x = 5:";
 
     dResult_poly = d_poly(5.0); 
     gfResult_poly = gf_poly(5); 

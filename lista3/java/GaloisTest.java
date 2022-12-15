@@ -91,9 +91,6 @@ public class GaloisTest {
         System.out.print("\n\\--> Real result: " + real + "\n"); 
         assert(real == expected);
 
-        
-        field1 = new Galois(FIELD_ORDER, random1);
-        field2 = new Galois(FIELD_ORDER, random2);
 
         expected = (FIELD_ORDER + ((random1 - random2) % FIELD_ORDER)) % FIELD_ORDER;
         result = field1.tSub(field2);
@@ -103,9 +100,6 @@ public class GaloisTest {
         System.out.print("\n\\--> Real result: " + real + "\n"); 
         assert(real == expected);
 
-
-        field1 = new Galois(FIELD_ORDER, random1);
-        field2 = new Galois(FIELD_ORDER, random2);
 
         expected = (FIELD_ORDER + ((random1 * random2) % FIELD_ORDER)) % FIELD_ORDER;
         result = field1.tMul(field2);
@@ -117,9 +111,6 @@ public class GaloisTest {
 
         
         try {
-            field1 = new Galois(FIELD_ORDER, random1);
-            field2 = new Galois(FIELD_ORDER, random2);
-
             expected = (FIELD_ORDER + ((random1 * random1) % FIELD_ORDER)) % FIELD_ORDER;
             temp1 = field1.tDiv(field2);
             temp2 = field1.tMul(field2);

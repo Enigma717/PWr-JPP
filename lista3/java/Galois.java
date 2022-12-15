@@ -103,23 +103,23 @@ public class Galois implements CoeffType<Galois> {
 
     @Override
     public Galois tAdd(final Galois field) {
-        this.value = (this.value + field.value) % this.order;
+        long result = (this.value + field.value) % this.order;
         
-        return this;
+        return new Galois(this.order, result);
     }
 
     @Override
     public Galois tSub(final Galois field) {
-        this.value = (this.order + (this.value - field.value) % this.order) % this.order;
+        long result = (this.order + (this.value - field.value) % this.order) % this.order;
         
-        return this;
+        return new Galois(this.order, result);
     }
 
     @Override
     public Galois tMul(final Galois field) {
-        this.value = (this.value * field.value) % this.order;
+        long result = (this.value * field.value) % this.order;
         
-        return this;
+        return new Galois(this.order, result);
     }
 
     @Override
@@ -128,9 +128,10 @@ public class Galois implements CoeffType<Galois> {
             throw new IllegalArgumentException(">> ERROR: Can't divide by 0! <<");
         }
 
-        this.tMul(field.tInverse());
+        Galois result = new Galois(this.order, this.value);
+        result.tMul(field.tInverse());
         
-        return this;
+        return result;
     }
 
     @Override

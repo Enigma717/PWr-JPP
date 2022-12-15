@@ -93,23 +93,27 @@ public class Polynomial<T extends CoeffType<T>> {
     public Polynomial<T> pAdd(final Polynomial<T> poly) {
         int p1Size = this.coefficients.size();
         int p2Size = poly.coefficients.size();
-        int resultSize = Math.max(p1Size, p2Size);
+        int loopBound = Math.min(p1Size, p2Size);
         int index = 0;
 
         T temp;
         ArrayList<T> resultCoeffs = new ArrayList<T>();
 
-        for (int i = 0; i < resultSize; i++) {
+        
+        for (int i = 0; i < loopBound; i++) {
             temp = this.coefficients.get(i).tAdd(poly.coefficients.get(i));
             resultCoeffs.add(temp);
             index++;
         }
+        
 
         while (index < p1Size) {
             resultCoeffs.add(this.coefficients.get(index));
+            index++;
         }
         while (index < p2Size) {
             resultCoeffs.add(poly.coefficients.get(index));
+            index++;
         }
 
         Polynomial<T> result = new Polynomial<T>(resultCoeffs);
@@ -120,23 +124,26 @@ public class Polynomial<T extends CoeffType<T>> {
     public Polynomial<T> pSub(final Polynomial<T> poly) {
         int p1Size = this.coefficients.size();
         int p2Size = poly.coefficients.size();
-        int resultSize = Math.max(p1Size, p2Size);
+        int loopBound = Math.min(p1Size, p2Size);
         int index = 0;
 
         T temp;
         ArrayList<T> resultCoeffs = new ArrayList<T>();
 
-        for (int i = 0; i < resultSize; i++) {
+        for (int i = 0; i < loopBound; i++) {
             temp = this.coefficients.get(i).tSub(poly.coefficients.get(i));
             resultCoeffs.add(temp);
             index++;
         }
 
+
         while (index < p1Size) {
             resultCoeffs.add(this.coefficients.get(index));
+            index++;
         }
         while (index < p2Size) {
-            resultCoeffs.add(poly.coefficients.get(index));
+            resultCoeffs.add(poly.coefficients.get(index).tNegate());
+            index++;
         }
 
         Polynomial<T> result = new Polynomial<T>(resultCoeffs);
@@ -153,7 +160,7 @@ public class Polynomial<T extends CoeffType<T>> {
         ArrayList<T> resultCoeffs = new ArrayList<T>();
 
         for (int i = 0; i < resultSize; i++) {
-            resultCoeffs.add(this.coefficients.get(i).tZero());
+            resultCoeffs.add(this.coefficients.get(0).tZero());
         }
         
         for (int i = 0; i < p1Size; i++) {
@@ -196,17 +203,7 @@ public class Polynomial<T extends CoeffType<T>> {
     }
 
     public Boolean pNotEqual(final Polynomial<T> poly) {
-        if (this.degree != poly.degree) {
-            return true;
-        }
-
-        for (int i = this.degree; i >= 0; i--) {
-            if (this.coefficients.get(i).tEqual(poly.coefficients.get(i))) {
-                return true;
-            }
-        }
-        
-        return false;     
+        return !(this.pEqual(poly)); 
     }
 
     public Boolean pGreaterEq(final Polynomial<T> poly) {

@@ -21,11 +21,11 @@ public class PolyTest {
         dRandom5 = Math.floor(dRandom5 * 100) / 100;
 
 
-        long lRandom1 = (long) Math.floor(dRandom1);
-        long lRandom2 = (long) Math.floor(dRandom2);
-        long lRandom3 = (long) Math.floor(dRandom3);
-        long lRandom4 = (long) Math.floor(dRandom4);
-        long lRandom5 = (long) Math.floor(dRandom5);
+        final long lRandom1 = (long) Math.floor(dRandom1);
+        final long lRandom2 = (long) Math.floor(dRandom2);
+        final long lRandom3 = (long) Math.floor(dRandom3);
+        final long lRandom4 = (long) Math.floor(dRandom4);
+        final long lRandom5 = (long) Math.floor(dRandom5);
 
         Galois Field1 = new Galois(2, lRandom1);
         Galois Field2 = new Galois(2, lRandom2);
@@ -33,16 +33,18 @@ public class PolyTest {
         Galois Field4 = new Galois(2, lRandom4);
         Galois Field5 = new Galois(2, lRandom5);
 
-        // Galois Test_field1 = new Galois(2, 1);
-        // Galois Test_field2 = new Galois(2, 2);
-        // Galois Test_field3 = new Galois(2, 3);
-        // Galois Test_field4 = new Galois(2, 4);
-        // Galois Test_field5 = new Galois(2, 5);
+        Galois testField1 = new Galois(2, 1);
+        Galois testField2 = new Galois(2, 2);
+        Galois testField3 = new Galois(2, 3);
+        Galois testField4 = new Galois(2, 4);
+        Galois testField5 = new Galois(2, 5);
 
-        // long expected = 0;
-        // long real = 0;
-        // Boolean logicExpected = false;
-        // Boolean logicReal = false;
+        Polynomial<NumCoeff> dResultPoly = new Polynomial<NumCoeff>(new NumCoeff(0.0));
+        Polynomial<Galois> gfResultPoly = new Polynomial<Galois>(new Galois(2, 0));
+        NumCoeff dEvalResult = new NumCoeff(0.0);
+        Galois gfEvalResult = new Galois(2, 0);
+        Boolean dLogicResult = false;
+        Boolean gfLogicResult = false;
 
         Formatter f = new Formatter();
 
@@ -76,153 +78,181 @@ public class PolyTest {
         
         System.out.print("\n\n====================[ CONSTRUCTOR TEST ]====================\n");
 
-        ArrayList<NumCoeff> real_coeffs = new ArrayList<NumCoeff>();
-        real_coeffs.add(new NumCoeff(dRandom1));
-        real_coeffs.add(new NumCoeff(dRandom2));
-        real_coeffs.add(new NumCoeff(dRandom3));
-        real_coeffs.add(new NumCoeff(dRandom4));
-        real_coeffs.add(new NumCoeff(dRandom5));
+        ArrayList<NumCoeff> realCoeffs = new ArrayList<NumCoeff>();
+        realCoeffs.add(new NumCoeff(dRandom1));
+        realCoeffs.add(new NumCoeff(dRandom2));
+        realCoeffs.add(new NumCoeff(dRandom3));
+        realCoeffs.add(new NumCoeff(dRandom4));
+        realCoeffs.add(new NumCoeff(dRandom5));
         
-        ArrayList<Galois> field_coeffs = new ArrayList<Galois>();
-        field_coeffs.add(Field1);
-        field_coeffs.add(Field2);
-        field_coeffs.add(Field3);
-        field_coeffs.add(Field4);
-        field_coeffs.add(Field5);
+        ArrayList<Galois> fieldCoeffs = new ArrayList<Galois>();
+        fieldCoeffs.add(Field1);
+        fieldCoeffs.add(Field2);
+        fieldCoeffs.add(Field3);
+        fieldCoeffs.add(Field4);
+        fieldCoeffs.add(Field5);
 
 
-        Polynomial<NumCoeff> dPoly = new Polynomial<NumCoeff>(real_coeffs);
+        Polynomial<NumCoeff> dPoly = new Polynomial<NumCoeff>(realCoeffs);
         System.out.print("\n-> Polynomial with real numbers:");
         System.out.print("\n|--> Print: " + dPoly); 
         System.out.print("\n\\--> Degree: " + dPoly.getDegree() + "\n"); 
         
-        Polynomial<Galois> gfPoly = new Polynomial<Galois>(field_coeffs);
+        Polynomial<Galois> gfPoly = new Polynomial<Galois>(fieldCoeffs);
         System.out.print("\n-> Polynomial with finite fields:");
         System.out.print("\n|--> Print: " + gfPoly); 
         System.out.print("\n\\--> Degree: " + gfPoly.getDegree() + "\n"); 
         
 
 
-        // System.out.print("\n\n=====================[ ARITHMETIC TEST ]====================\n");
+        System.out.print("\n\n=====================[ ARITHMETIC TEST ]====================\n");
 
 
-        // Galois result = new Galois(FIELD_ORDER);
-        // Galois temp1 = new Galois(FIELD_ORDER);
-        // Galois temp2 = new Galois(FIELD_ORDER);
-        // Galois field1 = new Galois(FIELD_ORDER, random1);
-        // Galois field2 = new Galois(FIELD_ORDER, random2);
-
-
-        // System.out.print("\n-> Expected result:");
-        // System.out.print("\n \\--> (order + ((random1 @ random2) % order)) % order"); 
-        // System.out.print("\n-> Real result:");
-        // System.out.print("\n \\--> Field1 @ Field2\n"); 
-
-
-        // expected = (FIELD_ORDER + ((random1 + random2) % FIELD_ORDER)) % FIELD_ORDER;
-        // result = field1.tAdd(field2);
-        // real = result.getValue();
-        // System.out.print("\n-> Addition test:");
-        // System.out.print("\n|--> Expected result: " + expected); 
-        // System.out.print("\n\\--> Real result: " + real + "\n"); 
-        // assert(real == expected);
-
+        ArrayList<NumCoeff> dTestValues = new ArrayList<NumCoeff>();
+        dTestValues.add(new NumCoeff(1.0));
+        dTestValues.add(new NumCoeff(2.0));
+        dTestValues.add(new NumCoeff(3.0));
+        dTestValues.add(new NumCoeff(4.0));
+        dTestValues.add(new NumCoeff(5.0));
         
-        // field1 = new Galois(FIELD_ORDER, random1);
-        // field2 = new Galois(FIELD_ORDER, random2);
+        ArrayList<Galois> gfTestValues = new ArrayList<Galois>();
+        gfTestValues.add(testField1);
+        gfTestValues.add(testField2);
+        gfTestValues.add(testField3);
+        gfTestValues.add(testField4);
+        gfTestValues.add(testField5);
 
-        // expected = (FIELD_ORDER + ((random1 - random2) % FIELD_ORDER)) % FIELD_ORDER;
-        // result = field1.tSub(field2);
-        // real = result.getValue();
-        // System.out.print("\n-> Subtraction test:");
-        // System.out.print("\n|--> Expected result: " + expected); 
-        // System.out.print("\n\\--> Real result: " + real + "\n"); 
-        // assert(real == expected);
+        Polynomial<NumCoeff> dTestPoly = new Polynomial<NumCoeff>(dTestValues);
+        Polynomial<Galois> gfTestPoly = new Polynomial<Galois>(gfTestValues);
 
 
-        // field1 = new Galois(FIELD_ORDER, random1);
-        // field2 = new Galois(FIELD_ORDER, random2);
+        System.out.print("\n>> Test real numbers polynomial: " + dTestPoly);
+        System.out.print("\n>> Test finite field polynomial: " + gfTestPoly);
 
-        // expected = (FIELD_ORDER + ((random1 * random2) % FIELD_ORDER)) % FIELD_ORDER;
-        // result = field1.tMul(field2);
-        // real = result.getValue();
-        // System.out.print("\n-> Multiplication test:");
-        // System.out.print("\n|-> Expected result: " + expected); 
-        // System.out.print("\n\\--> Real result: " + real + "\n"); 
-        // assert(real == expected);
+        //////////////////////////////////
+        System.out.print("\n\n-----------------------\n");
+        //////////////////////////////////
 
+        System.out.print("\n-> Addition test:");
+
+        dResultPoly = dPoly.pAdd(dTestPoly);
+        gfResultPoly = gfPoly.pAdd(gfTestPoly);
+
+        System.out.print("\n|--> Real numbers result: " + dResultPoly); 
+        System.out.print("\n|--> Finite field result: " + gfResultPoly); 
+        assert(dResultPoly.getDegree() == Math.max(dPoly.getDegree(), dTestPoly.getDegree()));
+        assert(gfResultPoly.getDegree() <= Math.max(gfPoly.getDegree(), gfTestPoly.getDegree()));
+
+        //////////////////////////////////
+        System.out.print("\n\n-----------------------\n");
+        //////////////////////////////////
+
+        System.out.print("\n-> Subtraction test:");
+
+        dResultPoly = dPoly.pSub(dTestPoly);
+        gfResultPoly = gfPoly.pSub(gfTestPoly);
         
-        // try {
-        //     field1 = new Galois(FIELD_ORDER, random1);
-        //     field2 = new Galois(FIELD_ORDER, random2);
+        System.out.print("\n|--> Real numbers result: " + dResultPoly); 
+        System.out.print("\n|--> Finite field result: " + gfResultPoly); 
+        assert(dResultPoly.getDegree() == Math.max(dPoly.getDegree(), dTestPoly.getDegree()));
+        assert(gfResultPoly.getDegree() <= Math.max(gfPoly.getDegree(), gfTestPoly.getDegree()));
+        
+        //////////////////////////////////
+        System.out.print("\n\n-----------------------\n");
+        //////////////////////////////////
 
-        //     expected = (FIELD_ORDER + ((random1 * random1) % FIELD_ORDER)) % FIELD_ORDER;
-        //     temp1 = field1.tDiv(field2);
-        //     temp2 = field1.tMul(field2);
-        //     result = temp1.tMul(temp2);
-        //     real = result.getValue();
-        //     System.out.print("\n-> Division test:");
-        //     System.out.print("\n|--> Expected result: " + expected); 
-        //     System.out.print("\n\\--> Real result: " + real + "\n"); 
-        //     assert(real == expected);
-        // } catch (IllegalArgumentException ex) {
-        //     System.out.print("\n" + ex.getMessage() + "\n");
-        // }
+        System.out.print("\n-> Multiplication test:");
+
+        dResultPoly = dPoly.pMul(dTestPoly);
+        gfResultPoly = gfPoly.pMul(gfTestPoly);
+        
+        System.out.print("\n|--> Real numbers result: " + dResultPoly); 
+        System.out.print("\n|--> Finite field result: " + gfResultPoly); 
+        assert(dResultPoly.getDegree() == (dPoly.getDegree() + dTestPoly.getDegree()));
+        assert(gfResultPoly.getDegree() <= (gfPoly.getDegree() + gfTestPoly.getDegree()));
+
+        //////////////////////////////////
+        System.out.print("\n\n-----------------------\n");
+        //////////////////////////////////
+
+        try {
+            System.out.print("\n-> Division test:");
+
+            dResultPoly = dPoly.pDiv(dTestPoly);
+            gfResultPoly = gfPoly.pDiv(gfTestPoly);
+            
+            System.out.print("\n|--> Real numbers result: " + dResultPoly); 
+            System.out.print("\n|--> Finite field result: " + gfResultPoly); 
+        } catch (IllegalArgumentException ex) {
+            System.out.print("\n" + ex.getMessage() + "\n");
+        }
+
+        //////////////////////////////////
+        System.out.print("\n\n-----------------------\n");
+        //////////////////////////////////
+
+        try {
+            System.out.print("\n-> Modulo test:");
+
+            dResultPoly = dPoly.pMod(dTestPoly);
+            gfResultPoly = gfPoly.pMod(gfTestPoly);
+            
+            System.out.print("\n|--> Real numbers result: " + dResultPoly); 
+            System.out.print("\n|--> Finite field result: " + gfResultPoly); 
+        } catch (IllegalArgumentException ex) {
+            System.out.print("\n" + ex.getMessage() + "\n");
+        }
 
 
 
-        // System.out.print("\n\n=======================[ LOGIC TEST ]=======================\n");
+        System.out.print("\n\n=======================[ LOGIC TEST ]=======================\n");
 
-        // logicExpected = 
-        //     ((FIELD_ORDER + (random1 % FIELD_ORDER)) % FIELD_ORDER) ==
-        //     ((FIELD_ORDER + (random2 % FIELD_ORDER)) % FIELD_ORDER); 
-        // logicReal = field1.tEqual(field2);
-        // System.out.print("\n-> Equality operator test (Field1 == Field2):");
-        // System.out.print("\n|--> Expected result: " + logicExpected); 
-        // System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
-        // assert(logicReal == logicExpected);
+        System.out.print("\n>> First real numbers polynomial: " + dPoly); 
+        System.out.print("\n>> Second real numbers polynomial: " + dTestPoly);
+        System.out.print("\n>> First finite field polynomial: " + gfPoly); 
+        System.out.print("\n>> Second finite field polynomial: " + gfTestPoly);
+        
+        System.out.print("\n\n-----------------------\n");
 
-        // logicExpected = 
-        //     ((FIELD_ORDER + (random1 % FIELD_ORDER)) % FIELD_ORDER) > 
-        //     ((FIELD_ORDER + (random2 % FIELD_ORDER)) % FIELD_ORDER); 
-        // logicReal = field1.tGreater(field2);
-        // System.out.print("\n-> Relational operator test (Field1 > Field2):");
-        // System.out.print("\n|--> Expected result: " + logicExpected); 
-        // System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
-        // assert(logicReal == logicExpected);
+        System.out.print("\n-> Equality operator test (Polynomial1 == Polynomial1):");
+        
+        dLogicResult = (dPoly.pEqual(dPoly));
+        gfLogicResult = (gfPoly.pEqual(gfPoly));
+        
+        System.out.print("\n|--> Real numbers result: " + dLogicResult); 
+        System.out.print("\n|--> Finite field result: " + gfLogicResult);
+        assert(dLogicResult == true);
+        assert(gfLogicResult == true);
+
+        System.out.print("\n\n-----------------------\n");
+
+        System.out.print("\n-> Inequality operator test (Polynomial1 != Polynomial2):");
+        
+        dLogicResult = (dPoly.pNotEqual(dTestPoly));
+        gfLogicResult = (gfPoly.pNotEqual(gfTestPoly));
+        
+        System.out.print("\n|--> Real numbers result: " + dLogicResult); 
+        System.out.print("\n|--> Finite field result: " + gfLogicResult);
+        assert(dLogicResult == true);
+        assert(gfLogicResult == true);
     
     
-        // logicExpected = 
-        //     ((FIELD_ORDER + (random1 % FIELD_ORDER)) % FIELD_ORDER) < 
-        //     ((FIELD_ORDER + (random2 % FIELD_ORDER)) % FIELD_ORDER); 
-        // logicReal = field1.tLess(field2);
-        // System.out.print("\n-> Relational operator test (Field1 < Field2):");
-        // System.out.print("\n|--> Expected result: " + logicExpected); 
-        // System.out.print("\n\\--> Real result: " + logicReal + "\n"); 
-        // assert(logicReal == logicExpected);
-    
-    
 
-        // System.out.print("\n\n=====================[ ASSIGNMENT TEST ]====================\n");
+        System.out.print("\n\n=======================[ EVALUATION TEST ]=======================\n");
 
-        // Galois newField = new Galois(FIELD_ORDER);
-        // long testInteger = Galois.assignToInt(newField);
-        // System.out.print("\n-> Integer to Object conversion test (int = Galois):");
-        // System.out.print("\n|-> newField object: " + newField); 
-        // System.out.print("\n\\--> testInteger value: " + testInteger + "\n"); 
-        // assert(newField.getValue() == testInteger);
-     
+        System.out.print("\n>> Real numbers polynomial: " + dPoly); 
+        System.out.print("\n>> Finite field polynomial: " + gfPoly); 
+
+        System.out.print("\n\n-----------------------\n");
+
+        System.out.print("\n-> Evaluating at point x = 5:");
+        
+        dEvalResult = dPoly.evaluate(new NumCoeff(5.0));
+        gfEvalResult = gfPoly.evaluate(new Galois(2, 5));
     
-        // testInteger = 256;
-        // newField.assignToObject(testInteger);
-        // System.out.print("\n-> Object to Integer conversion test (Galois = int):");
-        // System.out.print("\n|-> New testInteger value: " + testInteger); 
-        // System.out.print("\n\\--> Updated newField object : " + newField + "\n\n"); 
-        // assert(((FIELD_ORDER + 
-        //             (testInteger % FIELD_ORDER)) % 
-        //             FIELD_ORDER) == newField.getValue());
-    
-    
+        System.out.print("\n|--> Real numbers result: " + dEvalResult); 
+        System.out.print("\n|--> Finite field result: " + gfEvalResult + "\n\n\n");
+
         
         System.out.print("\n\t      >----------------------------<");
         System.out.print("\n\t      >>                          <<");

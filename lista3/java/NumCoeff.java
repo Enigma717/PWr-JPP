@@ -48,7 +48,7 @@ public class NumCoeff implements CoeffType<NumCoeff> {
 
     @Override
     public NumCoeff tNegate() {
-        return new NumCoeff(-this.number);
+        return new NumCoeff(-(this.number));
     }
 
     @Override
