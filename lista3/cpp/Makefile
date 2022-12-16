@@ -1,7 +1,11 @@
-all: galois polynomial
+all: galois polynomial hamming
 
-galois:
+galois: gtest.cpp gfield.cpp
 	g++ -o gtest gtest.cpp
 
-polynomial:
+polynomial: ptest.cpp polynomial.cpp gfield.cpp
 	g++ -o ptest ptest.cpp
+
+hamming: hamming.cpp polynomial.cpp gfield.cpp
+	g++ -o hamming hamming.cpp
+

@@ -12,6 +12,7 @@ public interface CoeffType<T> {
     T tInverse();
     T tAbsolute();
     T tNegate();
+    
     T tZero();
     T tOne();
     Boolean tIsZero();

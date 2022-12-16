@@ -244,7 +244,7 @@ template <typename T>
 Polynomial<T> Polynomial<T>::operator + (const T value) const
 {
     vector<T> result_coeffs = mCoefficients;
-    result_coeffs[0] += value;
+    result_coeffs[0] = result_coeffs[0] + value;
 
 
     Polynomial<T> result(result_coeffs);

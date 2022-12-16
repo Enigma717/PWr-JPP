@@ -316,7 +316,7 @@ int main()
     cout << "\n\n=======================[ EVALUATION TEST ]=======================\n";
 
     cout << "\n>> Real numbers polynomial: " << d_poly;
-    cout << "\n>> Finite field polynomial: " << gf_poly < "\n";
+    cout << "\n>> Finite field polynomial: " << gf_poly << "\n";
     
     cout << "\n-----------------------\n";
 
